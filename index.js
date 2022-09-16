@@ -16,16 +16,24 @@ const CREDENTIALS = require("./CREDENTIALS");
     await page.type('input[type="password"]', CREDENTIALS.PWD);
     console.log("clicking login");
     await page.click(".sc-bdVaJa.jBigVe");
-    //await new Promise((resolve) => setTimeout(resolve, 1000));
     await page.click('[type="submit"]');
 
-    //document.querySelectorAll("form");
     await page.waitForNavigation();
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    // make date string:
-    const currentDate = new Date();
-    let dateString = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`;
-    await page.screenshot({ path: `screenshot ${dateString}.png` });
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // wait for banner to appear.
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    const [span] = await page.$x("//span[contains(., 'Try Your Luck!')]");
+    if (span) {
+        await span.click();
+    }
+
+    // wait for the confirm button to appear.
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const [openSpan] = await page.$x("//span[contains(., 'Open')]");
+    if (openSpan) {
+        await openSpan.click();
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await browser.close();
 })();
