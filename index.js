@@ -15,20 +15,22 @@ const CREDENTIALS = require("./CREDENTIALS");
     await page.waitForSelector('input[type="password"]', { visible: true });
     await page.type('input[type="password"]', CREDENTIALS.PWD);
     console.log("clicking login");
+    await page.waitForSelector(".sc-bdVaJa.jBigVe");
     await page.click(".sc-bdVaJa.jBigVe");
     await page.click('[type="submit"]');
 
     await page.waitForNavigation();
 
     // wait for banner to appear.
-    await new Promise((resolve) => setTimeout(resolve, 4000));
+    //await new Promise((resolve) => setTimeout(resolve, 4000));
+    await page.waitForXPath("//span[contains(., 'Try Your Luck!')]");
     const [span] = await page.$x("//span[contains(., 'Try Your Luck!')]");
     if (span) {
         await span.click();
     }
 
     // wait for the confirm button to appear.
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await page.waitForXPath("//span[contains(., 'Open')]");
     const [openSpan] = await page.$x("//span[contains(., 'Open')]");
     if (openSpan) {
         await openSpan.click();
