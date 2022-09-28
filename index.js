@@ -15,8 +15,11 @@ const CREDENTIALS = require("./CREDENTIALS");
     await page.waitForSelector('input[type="password"]', { visible: true });
     await page.type('input[type="password"]', CREDENTIALS.PWD);
     console.log("clicking login");
-    await page.waitForSelector(".sc-bdVaJa.jBigVe");
-    await page.click(".sc-bdVaJa.jBigVe");
+    await page.waitForXPath("//span[contains(., 'Accept all')]");
+    const [spanAccept] = await page.$x("//span[contains(., 'Accept all')]");
+    if (spanAccept) {
+        await spanAccept.click();
+    }
     await page.click('[type="submit"]');
 
     await page.waitForNavigation();
